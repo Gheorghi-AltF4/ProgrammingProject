@@ -3,8 +3,8 @@ project(PP C)
 
 set(CMAKE_C_STANDARD 23)
 
-add_executable(PP main.c
-        accounts.h
-        fileIO.h
-        fileIO.c
-        accounts.c)
+add_executable(PP src/main.c
+        src/accounts/accounts.h
+        src/fileIO/fileIO.h
+        src/fileIO/fileIO.c
+        src/accounts/accounts.c)

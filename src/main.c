@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
-#include "fileIO.h"
-#include "accounts.h"
+#include "fileIO/fileIO.h"
+#include "accounts/accounts.h"
 
 void handle_input_error()
 {

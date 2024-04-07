@@ -10,7 +10,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "accounts.h"
+#include "../accounts/accounts.h"
 
 account_t *initialize_db(int *size);
 void dump_db(account_t *accounts, int size);
