@@ -28,7 +28,7 @@ void ignore_line(FILE*f)
     fgets(empty, MAX_LENGTH_LINE, f);
 }
 
-account_t next_line(FILE*f)
+account_t next_line(FILE *f)
 {
     account_t t;
     char line[MAX_LENGTH_LINE+1]; //pt terminator de sir
@@ -43,14 +43,16 @@ account_t next_line(FILE*f)
             strcpy(t.owner,pch);
         if (i==4)
             t.amount = atoi(pch);
-        if (i==3)
-            if (strcmp(pch,"RON") == 0)
+        if (i == 3)
+        {
+            if (strcmp(pch, "RON") == 0)
                 t.coin = RON;
-        if (strcmp(pch,"EUR") == 0)
-            t.coin = EUR;
-        if (strcmp(pch,"USD") == 0)
-            t.coin = USD;
-        pch = strtok (NULL, ",");
+            if (strcmp(pch, "EUR") == 0)
+                t.coin = EUR;
+            if (strcmp(pch, "USD") == 0)
+                t.coin = USD;
+        }
+        pch = strtok(NULL, ",");
     }
     return t;
 }
@@ -76,11 +78,15 @@ account_t *initialize_db(int *size)
     return accounts;
 }
 
-void dump_db(account_t *accounts, int size){
-    FILE* file = openFile(FILENAME,"w");
-    fprintf(file,"IBAN,owner,coin,amount\n");
-    for (int i = 0; i < size; ++i) {
-        fprintf(file,"%s,%s,%s,%d\n",accounts[i].IBAN,accounts[i].owner,currencies[accounts[i].coin],accounts[i].amount);
+void dump_db(account_t *accounts, int size)
+{
+    FILE *file = openFile(FILENAME, "w");
+    fprintf(file, "IBAN,owner,coin,amount\n");
+    if (accounts == NULL || size == 0)
+        return;
+    for (int i = 0; i < size; ++i)
+    {
+        fprintf(file, "%s,%s,%s,%d\n", accounts[i].IBAN, accounts[i].owner, currencies[accounts[i].coin], accounts[i].amount);
     }
 }
 
