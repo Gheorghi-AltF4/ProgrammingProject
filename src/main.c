@@ -107,7 +107,7 @@ int main(int argc, char *argv[]) {
                 handle_input_error();
                 continue;
             }
-                 perform_transaction(IBAN_src,IBAN_dst,amount,name,&size,accounts);
+            perform_transaction(IBAN_src,IBAN_dst,amount,name,&size,accounts);
         }
         else if (input == 0)
         {

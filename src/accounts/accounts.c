@@ -106,6 +106,11 @@ void perform_transaction(char *IBAN_src, char *IBAN_dst, int amount, char *name,
     }
     if (index_dst != -1 && index_src != -1)
     {
+        if (accounts[index_src].amount < amount)
+        {
+            printf("Cannot perform transaction!\nInsufficient funds!\n");
+            return;
+        }
         accounts[index_src].amount -= amount;
         accounts[index_dst].amount += amount;
     }
