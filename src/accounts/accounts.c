@@ -57,17 +57,21 @@ void view_accounts(char *name, int *size, account_t *accounts)
     printf(OUTSEP);
 }
 
-void delete_account(char *name, char *IBAN, int *size, account_t *accounts){
-    for (int i = 0; i < *size; ++i) {
-        if (strcmp(IBAN,accounts[i].IBAN) == 0)
+void delete_account(char *name, char *IBAN, int *size, account_t *accounts)
+{
+    for (int i = 0; i < *size; ++i)
+    {
+        if (strcmp(IBAN, accounts[i].IBAN) == 0)
         {
-            if (strcmp(name,accounts[i].owner) == 0)
+            if (strcmp(name, accounts[i].owner) == 0)
             {
+                (*size)--;
                 accounts[i] = accounts[*size - 1];
+                return;
             }
         }
     }
-    size--;
+    printf("Account not found\n");
 }
 
 void edit_account(char *name, char *IBAN, int *amount, currency_t *coin, int size, account_t *accounts){
