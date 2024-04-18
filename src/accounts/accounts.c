@@ -12,6 +12,7 @@
 #define INSEP "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
 
 char *currencies[] = {"RON", "EUR", "USD"};
+float usd_value[] = {0.21, 1.07,1};
 
 void generate_IBAN(char *destination)
 {
@@ -23,6 +24,12 @@ void generate_IBAN(char *destination)
     upper_bound = 99999999;
     int value3 = rand() % (upper_bound + 1);
     sprintf(destination, "RO%02dRNCB%08d%08d", value1, value2, value3);
+}
+
+int exchange(int amount,currency_t from,currency_t to){
+    amount = amount * usd_value[from];
+    amount = amount / usd_value[to];
+    return amount;
 }
 
 void create_account(char *name, currency_t coin, int *size, account_t **accounts){
@@ -88,34 +95,40 @@ void edit_account(char *name, char *IBAN, int amount, currency_t coin, int size,
     }
 }
 
-void perform_transaction(char *IBAN_src, char *IBAN_dst, int amount, char *name, int *size, account_t *accounts){
+void perform_transaction(char *IBAN_src, char *IBAN_dst, int amount, char *name, int *size, account_t *accounts) {
     int index_src = -1, index_dst = -1; //nu valoare random
     for (int i = 0; i < *size; ++i) {
-        if (strcmp(name,accounts[i].owner) == 0)
-        {
-            if (strcmp(IBAN_src,accounts[i].IBAN) == 0)
-            {
+        if (strcmp(name, accounts[i].owner) == 0) {
+            if (strcmp(IBAN_src, accounts[i].IBAN) == 0) {
                 index_src = i;
 
             }
         }
-        if (strcmp(accounts[i].IBAN,IBAN_dst) == 0)
-        {
+        if (strcmp(accounts[i].IBAN, IBAN_dst) == 0) {
             index_dst = i;
         }
     }
-    if (index_dst != -1 && index_src != -1)
-    {
-        if (accounts[index_src].amount < amount)
-        {
+    if (index_dst != -1 && index_src != -1) {
+        if (accounts[index_src].amount < amount) {
             printf("Cannot perform transaction!\nInsufficient funds!\n");
             return;
         }
-        accounts[index_src].amount -= amount;
-        accounts[index_dst].amount += amount;
+        if (accounts[index_src].coin == accounts[index_dst].coin) {
+            accounts[index_src].amount -= amount;
+            accounts[index_dst].amount += amount;
+        } else {
+            int decision;
+            printf("Your destination account has a different coin!\n Do you wish to continue?\n 0 = No \n 1 = Yes\n");
+            if (scanf("%d", &decision) == 0 || decision != 1) {
+                printf("Transaction aborted!\n");
+                return;
+            }
+            accounts[index_src].amount -= amount;
+            accounts[index_dst].amount += exchange(amount, accounts[index_src].coin, accounts[index_dst].coin);
+            printf("Transaction successful!");
+        }
     }
 }
-
 /*
  * typedef enum{
 E_ACCOUNT_NOT_FOUND,
