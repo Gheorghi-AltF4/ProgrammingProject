@@ -18,11 +18,11 @@ void generate_IBAN(char *destination)
     srand(time(NULL));
     int upper_bound = 99;
     int value1 = rand() % (upper_bound + 1);
-    upper_bound = 999999;
+    upper_bound = 99999999;
     int value2 = rand() % (upper_bound + 1);
     upper_bound = 99999999;
     int value3 = rand() % (upper_bound + 1);
-    sprintf(destination,"RO%02dRNCB%06d%08d", value1, value2, value3);
+    sprintf(destination, "RO%02dRNCB%08d%08d", value1, value2, value3);
 }
 
 void create_account(char *name, currency_t coin, int *size, account_t **accounts){
