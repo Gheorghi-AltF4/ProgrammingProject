@@ -38,7 +38,7 @@ void create_account(char *name, currency_t coin, int *size, account_t **accounts
 }
 
 void print_account(account_t account){
-    printf("%s,%s,%s,%d\n",account.IBAN,account.owner,currencies[account.coin],account.amount);
+    printf("| %-35s | %-50s | %-5s | %-10d |\n", account.IBAN, account.owner, currencies[account.coin], account.amount);
 }
 
 void view_accounts(char *name, int *size, account_t *accounts)
@@ -75,14 +75,14 @@ void delete_account(char *name, char *IBAN, int *size, account_t *accounts)
     printf("Account not found\n");
 }
 
-void edit_account(char *name, char *IBAN, int *amount, currency_t *coin, int size, account_t *accounts){
+void edit_account(char *name, char *IBAN, int amount, currency_t coin, int size, account_t *accounts){
     for (int i = 0; i < size; ++i) {
         if (strcmp(name,accounts[i].owner) == 0)
         {
             if (strcmp(IBAN,accounts[i].IBAN) == 0)
             {
-                accounts[i].amount = *amount;
-                accounts[i].coin = *coin;
+                accounts[i].amount = amount;
+                accounts[i].coin = coin;
             }
         }
     }

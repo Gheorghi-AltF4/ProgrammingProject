@@ -59,9 +59,31 @@ int main(int argc, char *argv[]) {
             }
             delete_account(name, iban, &size, accounts);
         }
-            // if (input == 4) {
-            //     edit_account(name,IBAN,amount,input_currency,size,accounts);
-            // }
+        else if (input == 4)
+             {
+                 char iban[40];
+                 printf("Provide an IBAN:\n");
+                 if (scanf("%40s", iban) == 0 || strlen(iban) != 24)
+                 {
+                     handle_input_error();
+                     continue;
+                 }
+                 int amount;
+                 printf("Provide an amount:\n");
+                 if (scanf("%d", &amount) == 0 || amount <= 0)
+                 {
+                     handle_input_error();
+                     continue;
+                 }
+                 currency_t input_currency;
+                 printf("Choose a currency: RON = 0, EUR = 1, USD = 2\n");
+                 if (scanf("%d", &input_currency) == 0 || input_currency >= 3)
+                 {
+                     handle_input_error();
+                     continue;
+                 }
+                 edit_account(name,iban,amount,input_currency,size,accounts);
+             }
             // if (input == 5) {
             //     perform_transaction(IBAN_src,IBAN_dst,amount,name,&size,accounts);
             // }

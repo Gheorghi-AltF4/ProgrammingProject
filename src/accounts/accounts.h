@@ -28,7 +28,7 @@ void view_accounts(char *name, int *size, account_t *accounts);
 
 void delete_account(char *name, char  *IBAN, int *size, account_t *accounts);
 
-void edit_account(char  *name, char *IBAN, int *amount, currency_t *coin, int size, account_t *accounts);
+void edit_account(char  *name, char *IBAN, int amount, currency_t coin, int size, account_t *accounts);
 
 void perform_transaction(char *IBAN_src, char *IBAN_dst, int amount, char *name, int *size, account_t *accounts);
 #endif //PP_ACCOUNTS_H
