@@ -67,6 +67,7 @@ void delete_account(char *name, char *IBAN, int *size, account_t *accounts)
             {
                 (*size)--;
                 accounts[i] = accounts[*size - 1];
+                printf("...Successfully deleted account!\n");
                 return;
             }
         }

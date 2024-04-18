@@ -48,9 +48,17 @@ int main(int argc, char *argv[]) {
         {
             view_accounts(name, &size, accounts);
         }
-            // if (input == 3) {
-            //     delete_account(name,IBAN,&size,accounts);
-            // }
+        else if (input == 3)
+        {
+            char iban[40];
+            printf("Provide an IBAN:\n");
+            if (scanf("%40s", iban) == 0 || strlen(iban) != 24)
+            {
+                handle_input_error();
+                continue;
+            }
+            delete_account(name, iban, &size, accounts);
+        }
             // if (input == 4) {
             //     edit_account(name,IBAN,amount,input_currency,size,accounts);
             // }
