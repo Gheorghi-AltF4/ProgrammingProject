@@ -84,9 +84,31 @@ int main(int argc, char *argv[]) {
                  }
                  edit_account(name,iban,amount,input_currency,size,accounts);
              }
-            // if (input == 5) {
-            //     perform_transaction(IBAN_src,IBAN_dst,amount,name,&size,accounts);
-            // }
+        else if (input == 5)
+        {
+            char IBAN_src[40];
+            printf("Provide a source IBAN:\n");
+            if (scanf("%40s", IBAN_src) == 0 || strlen(IBAN_src) != 24)
+            {
+                handle_input_error();
+                continue;
+            }
+            char IBAN_dst[40];
+            printf("Provide a destination IBAN:\n");
+            if (scanf("%40s", IBAN_dst) == 0 || strlen(IBAN_dst) != 24)
+            {
+                handle_input_error();
+                continue;
+            }
+            int amount;
+            printf("Provide an amount:\n");
+            if (scanf("%d", &amount) == 0 || amount <= 0)
+            {
+                handle_input_error();
+                continue;
+            }
+                 perform_transaction(IBAN_src,IBAN_dst,amount,name,&size,accounts);
+        }
         else if (input == 0)
         {
             printf("Goodbye!...\n");
