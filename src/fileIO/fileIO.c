@@ -61,18 +61,20 @@ account_t *initialize_db(int *size)
 {
     FILE *f;
     f = openFile(FILENAME, "r");
-    if (f == NULL)
+    if (f == NULL || ((*size = count_lines(f) - 2) <= 0))
     {
         printf("No database found. Initializing database...");
         *size = 0;
         dump_db(NULL, 0);
+        fclose(f);
         printf(" done\n");
         return NULL;
     }
     *size = count_lines(f) - 2;
     account_t *accounts = (account_t *)(malloc(*size * (sizeof(account_t))));
     ignore_line(f);
-    for (int i = 0; i < *size; ++i) {
+    for (int i = 0; i < *size; ++i)
+    {
         accounts[i] = next_line(f);
     }
     return accounts;
