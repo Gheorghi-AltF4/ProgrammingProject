@@ -7,7 +7,11 @@
 #include "string.h"
 #include "accounts.h"
 #include <time.h>
-char* currencies[] = {"RON", "EUR", "USD"};
+
+#define OUTSEP " ===============================================================================================================\n"
+#define INSEP "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
+
+char *currencies[] = {"RON", "EUR", "USD"};
 
 void generate_IBAN(char *destination)
 {
@@ -37,13 +41,20 @@ void print_account(account_t account){
     printf("%s,%s,%s,%d\n",account.IBAN,account.owner,currencies[account.coin],account.amount);
 }
 
-void view_accounts(char *name, int *size, account_t *accounts){
-    for (int i = 0; i < *size; ++i) {
-        if (strcmp(name,accounts[i].owner) == 0)
+void view_accounts(char *name, int *size, account_t *accounts)
+{
+    printf(OUTSEP);
+    printf("| %-35s | %-50s | %-5s | %-10s |\n", "IBAN", "owner", "coin", "amount");
+
+    for (int i = 0; i < *size; ++i)
+    {
+        if (strcmp(name, accounts[i].owner) == 0)
         {
+            printf(INSEP);
             print_account(accounts[i]);
         }
     }
+    printf(OUTSEP);
 }
 
 void delete_account(char *name, char *IBAN, int *size, account_t *accounts){
