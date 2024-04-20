@@ -32,7 +32,10 @@ int main(int argc, char *argv[]) {
     {
         print_menu();
         int input;
-        scanf("%d",&input);
+        char input_string[64];
+        scanf("%63s",input_string);
+        if (strlen(input_string) != 1 || sscanf(input_string,"%d",&input) == 0)
+            input = -1;
         if (input == 1) {
             currency_t input_currency;
             printf("Choose a currency: RON = 0, EUR = 1, USD = 2\n");
