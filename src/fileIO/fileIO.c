@@ -90,6 +90,7 @@ void dump_db(account_t *accounts, int size)
     {
         fprintf(file, "%s,%s,%s,%d\n", accounts[i].IBAN, accounts[i].owner, currencies[accounts[i].coin], accounts[i].amount);
     }
+    free(accounts);
 }
 
 void readFromFile(int* output)
