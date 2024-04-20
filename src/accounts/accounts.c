@@ -68,26 +68,34 @@ void delete_account(char *name, char *IBAN, int *size, account_t *accounts) {
                 accounts[i] = accounts[*size - 1];
                 printf("...Successfully deleted account!\n");
                 return;
+            } else {
+                printf("You are not the owner of the account!\n");
+                return;
             }
         }
     }
-    printf("Account not found\n");
+    printf("Account not found!\n");
 }
 
 void edit_account(char *name, char *IBAN, int amount, currency_t coin, int size, account_t *accounts) {
     for (int i = 0; i < size; ++i) {
-        if (strcmp(name, accounts[i].owner) == 0) {
-            if (strcmp(IBAN, accounts[i].IBAN) == 0) {
+        if (strcmp(IBAN, accounts[i].IBAN) == 0) {
+            if (strcmp(name, accounts[i].owner) == 0) {
                 accounts[i].amount = amount;
                 accounts[i].coin = coin;
-            }
+                return;
+            } else {
+                printf("You are not the owner of the account!\n");
+                return;
+        }
         }
     }
+    printf("Account not found!\n");
 }
 
 void perform_transaction(char *IBAN_src, char *IBAN_dst, int amount, char *name, int *size, account_t *accounts) {
     int index_src = -1, index_dst = -1; //nu valoare random
-    if (strcmp(IBAN_src,IBAN_dst) == 0){
+    if (strcmp(IBAN_src, IBAN_dst) == 0) {
         printf("Cannot perform transaction on the same account!\n");
         return;
     }
