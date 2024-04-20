@@ -12,10 +12,9 @@
 #define INSEP "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
 
 char *currencies[] = {"RON", "EUR", "USD"};
-float usd_value[] = {0.21, 1.07,1};
+float usd_value[] = {0.21, 1.07, 1};
 
-void generate_IBAN(char *destination)
-{
+void generate_IBAN(char *destination) {
     srand(time(NULL));
     int upper_bound = 99;
     int value1 = rand() % (upper_bound + 1);
@@ -26,37 +25,34 @@ void generate_IBAN(char *destination)
     sprintf(destination, "RO%02dRNCB%08d%08d", value1, value2, value3);
 }
 
-int exchange(int amount,currency_t from,currency_t to){
+int exchange(int amount, currency_t from, currency_t to) {
     amount = amount * usd_value[from];
     amount = amount / usd_value[to];
     return amount;
 }
 
-void create_account(char *name, currency_t coin, int *size, account_t **accounts){
+void create_account(char *name, currency_t coin, int *size, account_t **accounts) {
     //account_t *accounts = malloc(sizeof(account_t) * MAX_NUM);
-    (*size) ++;
-    *accounts = realloc(*accounts,(*size) * (sizeof(account_t)));
+    (*size)++;
+    *accounts = realloc(*accounts, (*size) * (sizeof(account_t)));
     account_t local;
     generate_IBAN(local.IBAN);
     local.coin = coin;
-    strcpy(local.owner,name);
+    strcpy(local.owner, name);
     local.amount = 0;
-    memcpy(&(*accounts)[(*size) -1], &local, sizeof(account_t));
+    memcpy(&(*accounts)[(*size) - 1], &local, sizeof(account_t));
 }
 
-void print_account(account_t account){
+void print_account(account_t account) {
     printf("| %-35s | %-50s | %-5s | %-10d |\n", account.IBAN, account.owner, currencies[account.coin], account.amount);
 }
 
-void view_accounts(char *name, int *size, account_t *accounts)
-{
+void view_accounts(char *name, int *size, account_t *accounts) {
     printf(OUTSEP);
     printf("| %-35s | %-50s | %-5s | %-10s |\n", "IBAN", "owner", "coin", "amount");
 
-    for (int i = 0; i < *size; ++i)
-    {
-        if (strcmp(name, accounts[i].owner) == 0)
-        {
+    for (int i = 0; i < *size; ++i) {
+        if (strcmp(name, accounts[i].owner) == 0) {
             printf(INSEP);
             print_account(accounts[i]);
         }
@@ -64,14 +60,10 @@ void view_accounts(char *name, int *size, account_t *accounts)
     printf(OUTSEP);
 }
 
-void delete_account(char *name, char *IBAN, int *size, account_t *accounts)
-{
-    for (int i = 0; i < *size; ++i)
-    {
-        if (strcmp(IBAN, accounts[i].IBAN) == 0)
-        {
-            if (strcmp(name, accounts[i].owner) == 0)
-            {
+void delete_account(char *name, char *IBAN, int *size, account_t *accounts) {
+    for (int i = 0; i < *size; ++i) {
+        if (strcmp(IBAN, accounts[i].IBAN) == 0) {
+            if (strcmp(name, accounts[i].owner) == 0) {
                 (*size)--;
                 accounts[i] = accounts[*size - 1];
                 printf("...Successfully deleted account!\n");
@@ -82,12 +74,10 @@ void delete_account(char *name, char *IBAN, int *size, account_t *accounts)
     printf("Account not found\n");
 }
 
-void edit_account(char *name, char *IBAN, int amount, currency_t coin, int size, account_t *accounts){
+void edit_account(char *name, char *IBAN, int amount, currency_t coin, int size, account_t *accounts) {
     for (int i = 0; i < size; ++i) {
-        if (strcmp(name,accounts[i].owner) == 0)
-        {
-            if (strcmp(IBAN,accounts[i].IBAN) == 0)
-            {
+        if (strcmp(name, accounts[i].owner) == 0) {
+            if (strcmp(IBAN, accounts[i].IBAN) == 0) {
                 accounts[i].amount = amount;
                 accounts[i].coin = coin;
             }
@@ -98,10 +88,12 @@ void edit_account(char *name, char *IBAN, int amount, currency_t coin, int size,
 void perform_transaction(char *IBAN_src, char *IBAN_dst, int amount, char *name, int *size, account_t *accounts) {
     int index_src = -1, index_dst = -1; //nu valoare random
     for (int i = 0; i < *size; ++i) {
-        if (strcmp(name, accounts[i].owner) == 0) {
-            if (strcmp(IBAN_src, accounts[i].IBAN) == 0) {
+        if (strcmp(IBAN_src, accounts[i].IBAN) == 0) {
+            if (strcmp(name, accounts[i].owner) == 0)
                 index_src = i;
-
+            else {
+                printf("You are not the owner of the account!\n");
+                return;
             }
         }
         if (strcmp(accounts[i].IBAN, IBAN_dst) == 0) {
@@ -126,6 +118,12 @@ void perform_transaction(char *IBAN_src, char *IBAN_dst, int amount, char *name,
             accounts[index_src].amount -= amount;
             accounts[index_dst].amount += exchange(amount, accounts[index_src].coin, accounts[index_dst].coin);
             printf("Transaction successful!");
+        }
+    } else {
+        if (index_dst != -1)
+            printf("Destination account not found!\n");
+        else {
+            printf("Source account not found!\n");
         }
     }
 }
