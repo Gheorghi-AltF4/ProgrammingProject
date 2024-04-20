@@ -87,6 +87,10 @@ void edit_account(char *name, char *IBAN, int amount, currency_t coin, int size,
 
 void perform_transaction(char *IBAN_src, char *IBAN_dst, int amount, char *name, int *size, account_t *accounts) {
     int index_src = -1, index_dst = -1; //nu valoare random
+    if (strcmp(IBAN_src,IBAN_dst) == 0){
+        printf("Cannot perform transaction on the same account!\n");
+        return;
+    }
     for (int i = 0; i < *size; ++i) {
         if (strcmp(IBAN_src, accounts[i].IBAN) == 0) {
             if (strcmp(name, accounts[i].owner) == 0)
